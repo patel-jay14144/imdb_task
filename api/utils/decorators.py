@@ -1,8 +1,9 @@
 from functools import wraps
+
 from flask import request
+from flask_jwt_extended import current_user, get_jwt_identity, jwt_required
 from flask_restful import abort
-from flask_jwt_extended import get_jwt_identity, jwt_required
-from flask_jwt_extended import current_user
+
 
 def load_request(serializer):
     """
@@ -14,7 +15,7 @@ def load_request(serializer):
 
     Usage:
         class CreateMovies(Resource):
-        
+
             @load_request(Moviesserializer())
             def post(self, serialized_payload):
                 ...
@@ -29,10 +30,11 @@ def load_request(serializer):
             kwargs["serialized_payload"] = serialized_payload
 
             return service_function(*args, **kwargs)
-        
+
         return wrapper
 
     return outer_wrapper
+
 
 def dump_request(serializer):
     """
@@ -44,7 +46,7 @@ def dump_request(serializer):
 
     Usage:
         class CreateMovies(Resource):
-        
+
             @dump_request(Moviesserializer())
             def post(self, serialized_payload):
                 ...
@@ -55,10 +57,11 @@ def dump_request(serializer):
         def wrapper(*args, **kwargs):
             response = service_function(*args, **kwargs)
             return serializer.dump(response)
-        
+
         return wrapper
 
     return outer_wrapper
+
 
 def allow_only_roles(allowed_roles):
     """
@@ -70,7 +73,7 @@ def allow_only_roles(allowed_roles):
 
     Usage:
         class CreateMovies(Resource):
-        
+
             @allow_only_roles([UserRole.ADMIN, UserRole.User])
             def post(self, serialized_payload):
                 ...
@@ -78,17 +81,16 @@ def allow_only_roles(allowed_roles):
     """
 
     def outer_wrapper(service_function):
-
         @jwt_required(optional=True)
         def wrapper(*args, **kwargs):
             if not current_user:
-                abort(403, message="Unauthenticated User")
+                abort(401, message="Unauthenticated User")
 
             if current_user.role not in allowed_roles:
                 abort(403, message="This role is Unauthorized")
 
             return service_function(*args, **kwargs)
-        
+
         return wrapper
 
     return outer_wrapper

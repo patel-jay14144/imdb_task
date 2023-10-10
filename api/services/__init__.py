@@ -1,6 +1,5 @@
 from .movies import CreateMoviesResource
-from .users import SignUpResource, SignInResource
-
+from .users import SignInResource, SignUpResource
 
 __all__ = [
     "CreateMoviesResource",

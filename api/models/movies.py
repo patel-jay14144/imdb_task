@@ -1,13 +1,16 @@
-from api import db
-from sqlalchemy import CheckConstraint, String, Float, BINARY, UniqueConstraint
-from sqlalchemy.orm import mapped_column
 import uuid
+
+from sqlalchemy import BINARY, CheckConstraint, Float, String, UniqueConstraint
+from sqlalchemy.orm import mapped_column
+
+from api import db
 
 
 class Movies(db.Model):
     """
     DB Model for storing Movies
     """
+
     id = mapped_column(String(36), primary_key=True, default=uuid.uuid4)
     director = mapped_column(String(200), nullable=False, index=True)
     name = mapped_column(String(200), nullable=False, index=True)

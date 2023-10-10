@@ -1,5 +1,5 @@
-from create_app import create_app
 from api import db
+from create_app import create_app
 
 app = create_app()
 

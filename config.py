@@ -1,7 +1,9 @@
 import os
+
 from dotenv import load_dotenv
 
 load_dotenv()
+
 
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY")
@@ -11,11 +13,15 @@ class Config:
     JWT_HEADER_NAME = "Authorization"
     JWT_HEADER_TYPE = "Bearer"
 
+
 class DevelopmentConfig(Config):
     DEBUG = True
+
 
 class ProductionConfig(Config):
     DEBUG = False
 
+
 class TestingConfig(Config):
     TESTING = True
+    SQLALCHEMY_DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI_TEST")

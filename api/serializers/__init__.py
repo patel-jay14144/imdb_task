@@ -1,6 +1,5 @@
 from .movies import MoviesSerializer
-from .users import UserSerializer, SignInSerializer, LogInSerializer
-
+from .users import LogInSerializer, SignInSerializer, UserSerializer
 
 __all__ = [
     "MoviesSerializer",

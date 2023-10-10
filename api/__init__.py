@@ -7,7 +7,4 @@ db = SQLAlchemy()
 from api.routes.movies import *
 from api.routes.users import *
 
-__all__ = [
-    "api",
-    "db"
-]
+__all__ = ["api", "db"]
