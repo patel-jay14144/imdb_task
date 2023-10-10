@@ -4,6 +4,7 @@ from api import api, db
 from api.models import *
 
 from flask_migrate import Migrate
+from flask_jwt_extended import JWTManager
 
 def create_app():
     app = Flask(__name__)
@@ -12,19 +13,18 @@ def create_app():
     app.config.from_object(Config)
     api.init_app(app)
     
-    # Initialize any extensions or additional configurations here
-    # For example, you might initialize a SQLAlchemy database instance:
-    # from flask_sqlalchemy import SQLAlchemy
-    # db = SQLAlchemy(app)
-    
-    # Import and register your blueprints here, if you're using them:
-    # from .routes import main_bp, auth_bp
-    # app.register_blueprint(main_bp)
-    # app.register_blueprint(auth_bp, url_prefix='/auth')
-
-
-
     db.init_app(app)
     Migrate(app, db)
-    
+
+    jwt = JWTManager(app)
+
+    @jwt.user_identity_loader
+    def user_identity_lookup(user):
+        return user.email_id
+
+    @jwt.user_lookup_loader
+    def user_lookup_callback(_jwt_header, jwt_data):
+        identity = jwt_data["sub"]
+        return User.query.filter_by(email_id=identity).one_or_none()
+        
     return app

@@ -1,4 +1,4 @@
 from api import api
-from api.services import AddMoviesResource
+from api.services import CreateMoviesResource
 
-api.add_resource(AddMoviesResource, "/movies")
+api.add_resource(CreateMoviesResource, "/movies")

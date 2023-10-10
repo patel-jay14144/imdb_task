@@ -9,8 +9,14 @@ flask-restful = "*"
 python-dotenv = "*"
 flask-migrate = "*"
 pymysql = "*"
+marshmallow = "*"
+flask-jwt-extended = "*"
+marshmallow-enum = "*"
+bcrypt = "*"
 
 [dev-packages]
+black = "*"
+isort = "*"
 
 [requires]
 python_version = "3.9"

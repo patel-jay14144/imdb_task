@@ -5,6 +5,7 @@ api = Api()
 db = SQLAlchemy()
 
 from api.routes.movies import *
+from api.routes.users import *
 
 __all__ = [
     "api",
