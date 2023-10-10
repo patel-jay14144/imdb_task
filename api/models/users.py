@@ -12,13 +12,14 @@ from api import db
 
 
 class UserRoles(Enum):
+    """Enums for possible User Roles"""
     ADMIN = "Admin"
     USER = "User"
 
 
 class User(db.Model):
     """
-    DB Model for storing Users
+    DB Model for Users
     """
 
     id = mapped_column(String(36), primary_key=True, default=uuid.uuid4)
@@ -29,20 +30,20 @@ class User(db.Model):
         SQLAlchemyENUM(UserRoles), nullable=False, default=UserRoles.USER.name
     )
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super(User, self).__init__(*args, **kwargs)
-        self.hash_password()  # Automatically hash the password when creating a User instance
+        self.hash_password()
 
-    def hash_password(self):
-        # Hash the password using bcrypt and set it to the 'password' field
+    def hash_password(self) -> None:
+        # Hash the password of the user obj
         self.password = bcrypt.hashpw(self.password.encode("utf-8"), bcrypt.gensalt())
 
-    def check_password(self, password):
-        # Check if the provided password matches the hashed password in the database
+    def check_password(self, password: str) -> bool:
+        # Verify Password of the user obj
         return bcrypt.checkpw(password.encode("utf-8"), self.password.encode("utf-8"))
 
     @staticmethod
-    def create(*args, **kwargs):
+    def create(*args, **kwargs) -> None:
         try:
             user = User(**kwargs)
             db.session.add(user)

@@ -8,7 +8,7 @@ from api import db
 
 class Movies(db.Model):
     """
-    DB Model for storing Movies
+    DB Model for Movies
     """
 
     id = mapped_column(String(36), primary_key=True, default=uuid.uuid4)

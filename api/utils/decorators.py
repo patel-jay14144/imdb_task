@@ -38,11 +38,8 @@ def load_request(serializer):
 
 def dump_request(serializer):
     """
-    A decorator that can be used in service functions to do the validation checks
-    of the payload based on provided marshmallow serializer.
-
-    This decorator will pass one extra keyword argument in the service function
-    called `serialized_payload`.
+    A decorator that can be used in service functions to response into json serializable responses
+    using the specified marshmallow serializer.
 
     Usage:
         class CreateMovies(Resource):
@@ -65,11 +62,8 @@ def dump_request(serializer):
 
 def allow_only_roles(allowed_roles):
     """
-    A decorator that can be used in service functions to do the validation checks
-    of the payload based on provided marshmallow allowed_roles.
-
-    This decorator will pass one extra keyword argument in the service function
-    called `serialized_payload`.
+    A decorator that can be used to decorate service functions to ensure
+    that the current user is authenticated and has one of the allowed_roles.
 
     Usage:
         class CreateMovies(Resource):
