@@ -16,12 +16,14 @@ class UserSerializer(Schema):
 
 class SignInSerializer(Schema):
     """Serialize Login Payload"""
+
     email_id = fields.Email(required=True)
     password = fields.String(required=True, load_only=True)
 
 
 class LogInSerializer(Schema):
     """Deserialize Login response"""
+
     access_token = fields.String()
     refresh_token = fields.String()
     user_obj = fields.Nested(UserSerializer)

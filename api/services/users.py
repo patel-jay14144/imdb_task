@@ -50,7 +50,6 @@ class SignInResource(Resource):
     @load_request(SignInSerializer())
     @dump_request(LogInSerializer())
     def post(self, serialized_payload: dict):
-
         # Fetch User from DB if exists else respond 404
         user = User.query.filter(
             User.email_id == serialized_payload["email_id"]

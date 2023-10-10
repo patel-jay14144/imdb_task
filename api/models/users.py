@@ -13,6 +13,7 @@ from api import db
 
 class UserRoles(Enum):
     """Enums for possible User Roles"""
+
     ADMIN = "Admin"
     USER = "User"
 
