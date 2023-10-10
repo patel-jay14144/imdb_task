@@ -1,11 +1,11 @@
 test:
-	python -m pytest -s
+	pipenv run python -m pytest -s
 
 run:
-	flask run
+	pipenv run flask run
 
 db-upgrade:
-	flask db upgrade
+	pipenv run flask db upgrade
 
 db-makemigrations:
-	flask db migrate
+	pipenv run flask db migrate
