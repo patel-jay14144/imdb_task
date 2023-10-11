@@ -1,8 +1,9 @@
-from .movies import CreateMoviesResource
+from .movies import GetUpdateDeleteMoviesResource, ListCreateMoviesResource
 from .users import SignInResource, SignUpResource
 
 __all__ = [
-    "CreateMoviesResource",
+    "ListCreateMoviesResource",
+    "GetUpdateDeleteMoviesResource",
     "SignUpResource",
     "SignInResource",
 ]

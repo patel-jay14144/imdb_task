@@ -1,11 +1,12 @@
-from flask_restful import Resource
+from flask_restful import Resource, abort
 
+from api import db
 from api.models import Movies, UserRoles
 from api.serializers import MoviesSerializer
 from api.utils.decorators import allow_only_roles, dump_request, load_request
 
 
-class CreateMoviesResource(Resource):
+class ListCreateMoviesResource(Resource):
     """
     API Resource to Create and List Movies
     Allowed Verbs: GET/POST
@@ -64,3 +65,46 @@ class CreateMoviesResource(Resource):
     def get(self):
         movies = Movies.query.all()
         return movies
+
+
+class GetUpdateDeleteMoviesResource(Resource):
+    """
+    API Resource to Create and List Movies
+    Allowed Verbs: GET/PATCH/DELETE
+    Request Payload:{
+        "99popularity": 83.0,
+        "director": "Victor Fleming",
+        "genre": [
+            "Adventure",
+            " Family",
+            " Fantasy",
+            " Musical"
+        ],
+        "imdb_score": 8.3,
+        "name": "The Wizard of Oz"
+    }
+
+    Response Object:{
+        "id": "0161ba59-fd6b-4b64-82c6-70307a5d2128",
+        "director": "John G. Avildsen",
+        "name": "The Karate Kid",
+        "imdb_score": 6.9,
+        "99popularity": 69.0
+    }
+    """
+
+    @allow_only_roles(allowed_roles=[UserRoles.ADMIN])
+    @load_request(MoviesSerializer(unknown="exclude"))
+    def patch(self, movie_id: str, serialized_payload: list):
+        Movies.update(movie_id, serialized_payload)
+        return "Updated", 200
+
+    @allow_only_roles(allowed_roles=[UserRoles.ADMIN])
+    def delete(self, movie_id: str):
+        Movies.query.filter(Movies.id == movie_id).delete()
+        db.session.commit()
+        return "DELETED", 204
+
+    @dump_request(MoviesSerializer())
+    def get(self, movie_id: str):
+        return Movies.query.get(movie_id) or abort(404, message="Movie not found")
