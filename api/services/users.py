@@ -53,7 +53,7 @@ class SignInResource(Resource):
         # Fetch User from DB if exists else respond 404
         user = User.query.filter(
             User.email_id == serialized_payload["email_id"]
-        ).first() or abort(404)
+        ).first() or abort(404, message="User Not found")
 
         # If incorrect password respond 400
         if not user.check_password(serialized_payload["password"]):
