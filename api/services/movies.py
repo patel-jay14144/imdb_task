@@ -1,3 +1,4 @@
+from flask import request
 from flask_restful import Resource, abort
 
 from api import db
@@ -63,7 +64,10 @@ class ListCreateMoviesResource(Resource):
 
     @dump_request(MoviesSerializer(many=True))
     def get(self):
-        movies = Movies.query.all()
+        movies = Movies.query
+
+        if request.args.get("search"):
+            movies = movies.filter(Movies.name.like(f"%{request.args.get('search')}%"))
         return movies
 
 
